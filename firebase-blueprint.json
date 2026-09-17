@@ -1,0 +1,78 @@
+{
+  "entities": {
+    "LeaderboardEntry": {
+      "title": "LeaderboardEntry",
+      "description": "High score entry for the global Lagos Expressway leaderboards",
+      "type": "object",
+      "properties": {
+        "playerName": {
+          "type": "string",
+          "description": "Display name or tag of the driver"
+        },
+        "score": {
+          "type": "number",
+          "description": "Total run score achieved"
+        },
+        "distance": {
+          "type": "number",
+          "description": "Meters traveled on the expressway"
+        },
+        "closeShaves": {
+          "type": "number",
+          "description": "Close shave combos achieved"
+        },
+        "vehicle": {
+          "type": "string",
+          "description": "Vehicle used (DANFO, OKADA, KEKE)"
+        },
+        "levelReached": {
+          "type": "number",
+          "description": "Furthest expressway level reached"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Auth UID of the player"
+        },
+        "createdAt": {
+          "type": "number",
+          "description": "Unix timestamp in ms"
+        }
+      },
+      "required": ["playerName", "score", "distance", "vehicle", "levelReached"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Synced player profile data",
+      "type": "object",
+      "properties": {
+        "highScore": {
+          "type": "number",
+          "description": "All time high score"
+        },
+        "totalKobo": {
+          "type": "number",
+          "description": "Total accumulated currency"
+        },
+        "unlockedVehicles": {
+          "type": "string",
+          "description": "Array of unlocked vehicle IDs"
+        },
+        "updatedAt": {
+          "type": "number",
+          "description": "Unix timestamp in ms"
+        }
+      },
+      "required": ["highScore", "totalKobo"]
+    }
+  },
+  "firestore": {
+    "/leaderboard/{entryId}": {
+      "schema": "LeaderboardEntry",
+      "description": "Global high score submissions"
+    },
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Player progression and settings"
+    }
+  }
+}

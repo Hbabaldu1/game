@@ -1,0 +1,6 @@
+{
+  "name": "Danfo Drift: Lagos Express",
+  "description": "High-octane Lagos expressway traffic weaver. Weave traffic, achieve close shaves, grab Kobo coins, and manage fuel.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

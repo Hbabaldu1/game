@@ -1,0 +1,49 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Leaderboard Collection
+    match /leaderboard/{entryId} {
+      // Allow anyone to read the public expressway leaderboards
+      allow read: if true;
+
+      // Allow authenticated players (including anonymous) to submit valid scores
+      allow create: if isAuthenticated()
+        && request.resource.data.score is number
+        && request.resource.data.score >= 0
+        && request.resource.data.distance is number
+        && request.resource.data.distance >= 0
+        && request.resource.data.playerName is string
+        && request.resource.data.playerName.size() > 0
+        && request.resource.data.playerName.size() <= 20
+        && request.resource.data.userId == request.auth.uid;
+
+      // Scores are immutable once submitted to prevent leaderboard tampering
+      allow update, delete: if false;
+    }
+
+    // User Profiles
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // Connection Health Check
+    match /test/connection {
+      allow read: if true;
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
